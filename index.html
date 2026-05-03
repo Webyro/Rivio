@@ -192,7 +192,44 @@
       opacity: 0.35;
     }
 
-  
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       MARQUEE
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .marquee-wrap {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 0.9rem 0;
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+    }
+
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: mq 28s linear infinite;
+    }
+
+    .mq-item {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 0 2.5rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .mq-dot {
+      width: 3px; height: 3px;
+      border-radius: 50%;
+      background: var(--blue-glow);
+      flex-shrink: 0;
+    }
+
     /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
        PAIN POINTS
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
@@ -510,35 +547,7 @@
 </section>
 
 
-<!-- ════ MARQUEE ════ -->
-<div class="marquee-wrap">
-  <div class="marquee-track">
-    <!-- first set -->
-    <div class="mq-item">Prozessanalyse <span class="mq-dot"></span></div>
-    <div class="mq-item">n8n Workflows <span class="mq-dot"></span></div>
-    <div class="mq-item">KI-Agenten <span class="mq-dot"></span></div>
-    <div class="mq-item">CRM-Automation <span class="mq-dot"></span></div>
-    <div class="mq-item">E-Mail-Automation <span class="mq-dot"></span></div>
-    <div class="mq-item">API-Integrationen <span class="mq-dot"></span></div>
-    <div class="mq-item">Dokumentenmanagement <span class="mq-dot"></span></div>
-    <div class="mq-item">Angebotserstellung <span class="mq-dot"></span></div>
-    <div class="mq-item">Rechnungsstellung <span class="mq-dot"></span></div>
-    <div class="mq-item">Kunden-Onboarding <span class="mq-dot"></span></div>
-    <div class="mq-item">Reporting <span class="mq-dot"></span></div>
-    <!-- duplicate for seamless loop -->
-    <div class="mq-item">Prozessanalyse <span class="mq-dot"></span></div>
-    <div class="mq-item">n8n Workflows <span class="mq-dot"></span></div>
-    <div class="mq-item">KI-Agenten <span class="mq-dot"></span></div>
-    <div class="mq-item">CRM-Automation <span class="mq-dot"></span></div>
-    <div class="mq-item">E-Mail-Automation <span class="mq-dot"></span></div>
-    <div class="mq-item">API-Integrationen <span class="mq-dot"></span></div>
-    <div class="mq-item">Dokumentenmanagement <span class="mq-dot"></span></div>
-    <div class="mq-item">Angebotserstellung <span class="mq-dot"></span></div>
-    <div class="mq-item">Rechnungsstellung <span class="mq-dot"></span></div>
-    <div class="mq-item">Kunden-Onboarding <span class="mq-dot"></span></div>
-    <div class="mq-item">Reporting <span class="mq-dot"></span></div>
-  </div>
-</div>
+
 
 
 <!-- ════ PAIN POINTS ════ -->
