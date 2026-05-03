@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Impressum – Rivio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink: #080f28; --ink-2: #0e1a40;
+      --blue-glow: #4a7fff; --white: #ffffff; --muted: #8a9bc4;
+      --border: rgba(74,127,255,0.18); --grid-line: rgba(74,127,255,0.06);
+    }
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--ink);
+      color: var(--white);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none; z-index: 0;
+    }
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      padding: 1rem 2rem;
+      background: rgba(8,15,40,0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      z-index: 100;
+    }
+    .nav-brand {
+      font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 0.38em; color: var(--white);
+      text-decoration: none;
+    }
+    .nav-back {
+      font-size: 0.85rem; color: var(--muted);
+      text-decoration: none; transition: color 0.2s;
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .nav-back:hover { color: var(--white); }
+    .nav-back::before {
+      content: '';
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-left: 1.5px solid currentColor;
+      border-bottom: 1.5px solid currentColor;
+      transform: rotate(45deg);
+    }
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 8rem 2rem 5rem;
+      position: relative; z-index: 1;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--blue-glow); margin-bottom: 1rem;
+    }
+    .eyebrow::before {
+      content: ''; display: block;
+      width: 20px; height: 1px; background: var(--blue-glow);
+    }
+    h1 {
+      font-size: 2.5rem; font-weight: 800;
+      letter-spacing: -0.025em; margin-bottom: 3rem;
+    }
+    h2 {
+      font-size: 1rem; font-weight: 700;
+      color: var(--white); margin: 2rem 0 0.5rem;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      font-size: 0.78rem; color: var(--blue-glow);
+    }
+    p { color: var(--muted); font-size: 0.95rem; margin-bottom: 0.5rem; }
+    a { color: var(--blue-glow); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .divider {
+      width: 100%; height: 1px;
+      background: var(--border); margin: 2.5rem 0;
+    }
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 2rem; text-align: center;
+      color: var(--muted); font-size: 0.82rem;
+      position: relative; z-index: 1;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="rivio_fixed_5.html" class="nav-brand">R &nbsp; I &nbsp; V &nbsp; I &nbsp; O</a>
+  <a href="rivio_fixed_5.html" class="nav-back">Zurück zur Startseite</a>
+</nav>
+
+<main>
+  <div class="eyebrow">Rechtliches</div>
+  <h1>Impressum</h1>
+
+  <h2>Angaben gemäß § 5 TMG</h2>
+  <p>Rivio Solutions</p>
+  <p>Marcel Jahn, Sam Carey & Daniel Töller</p>
+  <p>Am Rheinauer See 87</p>
+  <p>68219 Mannheim</p>
+  <p>Deutschland</p>
+
+  <div class="divider"></div>
+
+  <h2>Kontakt</h2>
+  <p>Telefon: +49 (0) 157 53682863</p>
+  <p>E-Mail: <a href="mailto:team@rivio-solutions.de">team@rivio-solutions.de</a></p>
+
+  <div class="divider"></div>
+
+  <h2>Vertreten durch</h2>
+  <p>Marcel Jahn, Sam Carey & Daniel Töller </p>
+
+  <div class="divider"></div>
+
+  <h2>Verantwortlich für den Inhalt (§ 55 Abs. 2 RStV)</h2>
+  <p>Marcel Jahn</p>
+  <p>Am Rheinauersee 87, 68219 Mannheim</p>
+
+  <div class="divider"></div>
+
+  <h2>Haftungsausschluss</h2>
+  <p>Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen.</p>
+
+  <div class="divider"></div>
+
+  <h2>Urheberrecht</h2>
+  <p>Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.</p>
+</main>
+
+<footer>© Rivio 2026</footer>
+
+</body>
+</html>

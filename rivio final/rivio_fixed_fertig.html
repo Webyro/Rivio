@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rivio – Intelligent Automation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* ── RESET ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    /* ── TOKENS ── */
+    :root {
+      --ink:        #080f28;
+      --ink-2:      #0e1a40;
+      --blue:       #1a3aab;
+      --blue-mid:   #2d5be3;
+      --blue-glow:  #4a7fff;
+      --blue-lt:    #8ab4d4;
+      --white:      #ffffff;
+      --muted:      #8a9bc4;
+      --border:     rgba(74, 127, 255, 0.18);
+      --grid-line:  rgba(74, 127, 255, 0.06);
+    }
+
+    /* ── BASE ── */
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--ink);
+      color: var(--white);
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    /* ── GRID BACKGROUND ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── LAYOUT ── */
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 1; }
+    .section { padding: 7rem 0; position: relative; }
+
+    /* ── EYEBROW ── */
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--blue-glow);
+      margin-bottom: 1.25rem;
+    }
+    .eyebrow::before {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 1px;
+      background: var(--blue-glow);
+    }
+
+    /* ── HEADINGS ── */
+    h1 { font-size: clamp(2.6rem, 6vw, 4.2rem); font-weight: 800; line-height: 1.08; letter-spacing: -0.03em; }
+    h2 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; line-height: 1.15; letter-spacing: -0.025em; }
+    h3 { font-size: 1.05rem; font-weight: 600; }
+    .text-muted { color: var(--muted); }
+
+    /* ── GRADIENT TEXT ── */
+    .grad {
+      background: linear-gradient(110deg, #ffffff 30%, var(--blue-glow) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.8rem 1.75rem;
+      border-radius: 6px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border: none;
+    }
+    .btn-primary { background: var(--blue-mid); color: #fff; box-shadow: 0 0 0 1px rgba(74,127,255,0.4); }
+    .btn-primary:hover { background: var(--blue-glow); box-shadow: 0 0 24px rgba(74,127,255,0.35); }
+    .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+    .btn-ghost:hover { color: var(--white); border-color: rgba(74,127,255,0.4); }
+
+    /* arrow icon */
+    .arr {
+      display: inline-block;
+      width: 12px; height: 12px;
+      border-top: 1.5px solid currentColor;
+      border-right: 1.5px solid currentColor;
+      transform: rotate(45deg);
+      border-radius: 1px;
+      flex-shrink: 0;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       HERO
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 6rem 0 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #hero::after {
+      content: '';
+      position: absolute;
+      left: 50%; top: 45%;
+      transform: translate(-50%, -50%);
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(45,91,227,0.13) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 760px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 3rem;
+      animation: fadeUp 0.9s ease both;
+    }
+
+    .logo-wordmark {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.55em;
+      color: var(--white);
+      opacity: 0.9;
+      margin-bottom: 0.5rem;
+    }
+
+    .logo-svg { width: 200px; }
+
+    .hero-inner h1 { animation: fadeUp 0.9s ease 0.1s both; }
+
+    .hero-tagline {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 480px;
+      margin: 1.5rem auto 0;
+      animation: fadeUp 0.9s ease 0.2s both;
+    }
+
+    .hero-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2.5rem;
+      animation: fadeUp 0.9s ease 0.3s both;
+    }
+
+    #netCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      opacity: 0.35;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       MARQUEE
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .marquee-wrap {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 0.9rem 0;
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+    }
+
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: mq 28s linear infinite;
+    }
+
+    .mq-item {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 0 2.5rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .mq-dot {
+      width: 3px; height: 3px;
+      border-radius: 50%;
+      background: var(--blue-glow);
+      flex-shrink: 0;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       PAIN POINTS
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .pain-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 3.5rem;
+    }
+
+    .pain-card {
+      background: var(--ink);
+      padding: 2rem 1.75rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.25s;
+      opacity: 0;
+      transform: translateY(16px);
+    }
+
+    .pain-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.5s ease, transform 0.5s ease, background 0.25s;
+    }
+
+    .pain-card:hover { background: var(--ink-2); }
+
+    .pain-num {
+      position: absolute;
+      top: 1.5rem; right: 1.75rem;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: rgba(74,127,255,0.25);
+    }
+
+    .pain-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 30px; height: 2px;
+      background: var(--blue-mid);
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    .pain-card:hover::after { opacity: 1; }
+
+    .pain-ico { width: 36px; height: 36px; margin-bottom: 1.25rem; }
+    .pain-card h3 { color: var(--white); margin-bottom: 0.5rem; font-size: 0.98rem; }
+    .pain-card p  { color: var(--muted); font-size: 0.88rem; line-height: 1.6; }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       SERVICES
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-top: 3.5rem;
+    }
+
+    .service-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 2.25rem 2rem;
+      background: linear-gradient(135deg, rgba(26,58,171,0.08) 0%, transparent 100%);
+      position: relative;
+      transition: border-color 0.25s, background 0.25s;
+      opacity: 0;
+      transform: translateY(16px);
+    }
+
+    .service-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.25s, background 0.25s;
+    }
+
+    .service-card:hover {
+      border-color: rgba(74,127,255,0.4);
+      background: linear-gradient(135deg, rgba(45,91,227,0.12) 0%, transparent 100%);
+    }
+
+    .service-num {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--blue-glow);
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+    }
+
+    .service-card h3 { font-size: 1.15rem; color: var(--white); margin-bottom: 0.75rem; }
+    .service-card p  { color: var(--muted); font-size: 0.9rem; line-height: 1.65; }
+
+    .tag-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.25rem; }
+    .tag {
+      font-size: 0.72rem;
+      font-weight: 500;
+      padding: 0.2rem 0.65rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      color: var(--blue-lt);
+      letter-spacing: 0.04em;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       PROCESS
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .process-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+      margin-top: 1rem;
+    }
+
+    .proc-sticky { position: sticky; top: 6rem; }
+    .proc-sticky h2 { margin-bottom: 1.25rem; }
+    .proc-sticky p  { color: var(--muted); margin-bottom: 2rem; max-width: 360px; }
+
+    .timeline { display: flex; flex-direction: column; }
+
+    .t-step {
+      display: flex;
+      gap: 1.5rem;
+      opacity: 0;
+      transform: translateX(-16px);
+    }
+
+    .t-step.visible {
+      opacity: 1;
+      transform: translateX(0);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+
+    .t-left { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: 40px; }
+
+    .t-num {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--ink-2);
+      color: var(--blue-glow);
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      letter-spacing: 0.05em;
+    }
+
+    .t-line {
+      width: 1px;
+      flex: 1;
+      background: var(--border);
+      min-height: 40px;
+      margin: 6px 0;
+    }
+
+    .t-body { padding-bottom: 2.5rem; }
+    .t-sub {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--blue-glow);
+      margin-bottom: 0.4rem;
+    }
+    .t-body h3 { color: var(--white); margin-bottom: 0.4rem; font-size: 1rem; }
+    .t-body p  { color: var(--muted); font-size: 0.9rem; line-height: 1.65; }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       CONTACT
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .contact-box { max-width: 640px; margin: 0 auto; text-align: center; }
+    .contact-box h2 { margin-bottom: 0.75rem; }
+    .contact-box .sub { color: var(--muted); margin-bottom: 3rem; }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      text-align: left;
+    }
+
+    .form-full { grid-column: 1 / -1; }
+
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+
+    .form-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .fc {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: var(--ink-2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--white);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .fc::placeholder { color: rgba(138,155,196,0.4); }
+    .fc:focus { border-color: rgba(74,127,255,0.5); }
+    textarea.fc { resize: vertical; min-height: 110px; }
+
+    .form-submit { margin-top: 1rem; width: 100%; justify-content: center; padding: 0.9rem; font-size: 0.95rem; }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       FOOTER
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-row {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-mark { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.38em; color: var(--white); }
+    .footer-links { display: flex; gap: 2rem; }
+    .footer-links a { font-size: 0.82rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--white); }
+    .footer-copy { font-size: 0.78rem; color: rgba(138,155,196,0.45); }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       KEYFRAMES
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    @keyframes blink {
+      0%, 100% { opacity: 1; } 50% { opacity: 0; }
+    }
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes mq {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       RESPONSIVE
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    @media (max-width: 900px) {
+      .pain-grid    { grid-template-columns: 1fr 1fr; }
+      .service-grid { grid-template-columns: 1fr; }
+      .process-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .proc-sticky { position: static; }
+    }
+
+    @media (max-width: 600px) {
+      .pain-grid { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .hero-cta  { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════ HERO ════ -->
+<section id="hero">
+  <canvas id="netCanvas"></canvas>
+
+  <div class="wrap">
+    <div class="hero-inner">
+      <div class="hero-logo">
+       <div class="logo-wordmark">R &nbsp; I &nbsp; V &nbsp; I &nbsp; O</div>
+<svg class="logo-svg" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <path d="M 10 26 Q 55 44, 100 48 Q 145 44, 190 26 Q 168 68, 100 72 Q 32 68, 10 26 Z" fill="#0d1f6e"/>
+  <path d="M 14 33 Q 56 52, 100 56 Q 144 52, 186 33 Q 164 72, 100 76 Q 36 72, 14 33 Z" fill="#1a3aab"/>
+  <path d="M 18 41 Q 57 60, 100 63 Q 143 60, 182 41 Q 160 76, 100 79 Q 40 76, 18 41 Z" fill="#2d5be3" opacity="0.85"/>
+  <path d="M 22 50 Q 58 68, 100 71 Q 142 68, 178 50 Q 156 80, 100 83 Q 44 80, 22 50 Z" fill="#8ab4d4" opacity="0.55"/>
+  <path d="M 10 26 Q 52 10, 100 15 Q 148 20, 190 8" stroke="#4a7fff" stroke-width="1.5" stroke-linecap="round" opacity="0.65">
+    <animate attributeName="d"
+      values="M 10 26 Q 52 10, 100 15 Q 148 20, 190 8;M 10 26 Q 52 38, 100 13 Q 148 6, 190 26;M 10 26 Q 52 10, 100 15 Q 148 20, 190 8"
+      dur="5s" repeatCount="indefinite"/>
+  </path>
+</svg>
+      </div>
+
+      <h1>Wir automatisieren<br><span class="grad" id="typewriter"></span><span id="cursor" style="color:#4a7fff;animation:blink 1s step-end infinite;">|</span></h1>
+      <p class="hero-tagline">Automation mit KI, n8n und smarter Software — damit Du Dich auf das Wesentliche konzentrierst.</p>
+
+      <div class="hero-cta">
+        <a href="#contact" class="btn btn-primary">Kostenloses Erstgespräch <span class="arr"></span></a>
+        <a href="#process" class="btn btn-ghost">So arbeiten wir</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════ MARQUEE ════ -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <!-- first set -->
+    <div class="mq-item">Prozessanalyse <span class="mq-dot"></span></div>
+    <div class="mq-item">n8n Workflows <span class="mq-dot"></span></div>
+    <div class="mq-item">KI-Agenten <span class="mq-dot"></span></div>
+    <div class="mq-item">CRM-Automation <span class="mq-dot"></span></div>
+    <div class="mq-item">E-Mail-Automation <span class="mq-dot"></span></div>
+    <div class="mq-item">API-Integrationen <span class="mq-dot"></span></div>
+    <div class="mq-item">Dokumentenmanagement <span class="mq-dot"></span></div>
+    <div class="mq-item">Angebotserstellung <span class="mq-dot"></span></div>
+    <div class="mq-item">Rechnungsstellung <span class="mq-dot"></span></div>
+    <div class="mq-item">Kunden-Onboarding <span class="mq-dot"></span></div>
+    <div class="mq-item">Reporting <span class="mq-dot"></span></div>
+    <!-- duplicate for seamless loop -->
+    <div class="mq-item">Prozessanalyse <span class="mq-dot"></span></div>
+    <div class="mq-item">n8n Workflows <span class="mq-dot"></span></div>
+    <div class="mq-item">KI-Agenten <span class="mq-dot"></span></div>
+    <div class="mq-item">CRM-Automation <span class="mq-dot"></span></div>
+    <div class="mq-item">E-Mail-Automation <span class="mq-dot"></span></div>
+    <div class="mq-item">API-Integrationen <span class="mq-dot"></span></div>
+    <div class="mq-item">Dokumentenmanagement <span class="mq-dot"></span></div>
+    <div class="mq-item">Angebotserstellung <span class="mq-dot"></span></div>
+    <div class="mq-item">Rechnungsstellung <span class="mq-dot"></span></div>
+    <div class="mq-item">Kunden-Onboarding <span class="mq-dot"></span></div>
+    <div class="mq-item">Reporting <span class="mq-dot"></span></div>
+  </div>
+</div>
+
+
+<!-- ════ PAIN POINTS ════ -->
+<section id="pain" class="section">
+  <div class="wrap">
+    <div class="eyebrow">Ineffizienz erkennen</div>
+    <h2>Was Dein Unternehmen bremst</h2>
+    <p class="text-muted" style="margin-top:0.75rem;max-width:520px;font-size:1rem;">Sechs Signale, die zeigen, dass Deine Prozesse Potenzial für Automation haben: </p>
+
+    <div class="pain-grid">
+
+      <div class="pain-card">
+        <span class="pain-num">01</span>
+        <div style="width:28px;height:2px;background:#4a7fff;margin-bottom:1.25rem;"></div>
+        <h3>Viel Handarbeit</h3>
+        <p>Copy-Paste, manuelle Dateneingabe und repetitive Aufgaben fressen täglich wertvolle Zeit.</p>
+      </div>
+
+      <div class="pain-card">
+        <span class="pain-num">02</span>
+        <div style="width:28px;height:2px;background:#4a7fff;margin-bottom:1.25rem;"></div>
+        <h3>Viele Fehler</h3>
+        <p>Menschliche Fehler kosten Geld und Zeit.</p>
+      </div>
+
+      <div class="pain-card">
+        <span class="pain-num">03</span>
+        <div style="width:28px;height:2px;background:#4a7fff;margin-bottom:1.25rem;"></div>
+        <h3>Langsame Abläufe</h3>
+        <p>Kunden warten zu lang, interne Prozesse stocken und bremsen das Wachstum spürbar.</p>
+      </div>
+
+      <div class="pain-card">
+        <span class="pain-num">04</span>
+        <div style="width:28px;height:2px;background:#4a7fff;margin-bottom:1.25rem;"></div>
+        <h3>Wenig Gewinn</h3>
+        <p>Trotz guter Auftragslage fressen Kosten und Aufwand die Marge.</p>
+      </div>
+
+      <div class="pain-card">
+        <span class="pain-num">05</span>
+        <div style="width:28px;height:2px;background:#4a7fff;margin-bottom:1.25rem;"></div>
+        <h3>Abhängigkeit von Personen</h3>
+        <p>Fällt jemand aus, dann bleibt auch dein Geschäft stehen. Automationen hingegen werden nie krank und arbeiten 24/7.</p>
+      </div>
+
+      <div class="pain-card">
+        <span class="pain-num">06</span>
+       <div style="width:28px;height:2px;background:#4a7fff;margin-bottom:1.25rem;"></div>
+        <h3>Unzufriedene Kunden</h3>
+        <p>Fehler im Prozess wirken sich nachhaltig auf das Kundenerlebnis aus und kosten Vertrauen.</p>
+      </div>
+
+    </div>
+
+    <div style="text-align:center;">
+      <a href="#contact" class="btn btn-primary" style="margin-top:3rem;">Kostenloses Erstgespräch <span class="arr"></span></a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════ SERVICES ════ -->
+<section id="services" class="section">
+  <div class="wrap">
+    <div class="eyebrow">Leistungen</div>
+    <h2>Was wir für Dich umsetzen</h2>
+    <p class="text-muted" style="margin-top:0.75rem;max-width:480px;font-size:1rem;">Drei Säulen, eine Mission: Deine Prozesse so effizient wie möglich.</p>
+
+    <div class="service-grid">
+      <div class="service-card">
+        <span class="service-num">01 — Automation</span>
+        <h3>Workflow-Automation</h3>
+        <p>Repetitive Aufgaben laufen mit n8n automatisch — rund um die Uhr, ohne manuellen Aufwand und mit minimaler Fehlerquote.</p>
+        <div class="tag-row">
+         
+        </div>
+      </div>
+      <div class="service-card">
+        <span class="service-num">02 — Artificial Intelligence</span>
+        <h3>KI-Implementierung</h3>
+        <p>Vorteile von KI werden endlich spürbar und dein Team von kognitiver Routinearbeit befreit.</p>
+        <div class="tag-row">
+        
+        </div>
+      </div>
+      <div class="service-card">
+        <span class="service-num">03 — Software</span>
+        <h3>Individuelle Lösungen</h3>
+        <p>Maßgeschneiderte Prozesse, APIs und Sysmetintehrationen passgenau für Deine bestehende Infrastruktur.</p>
+        <div class="tag-row">
+         
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════ ABLAUFPLAN ════ -->
+<section id="process" class="section">
+  <div class="wrap">
+    <div class="process-inner">
+      <div class="proc-sticky">
+        <div class="eyebrow">Ablaufplan</div>
+        <h2>So arbeiten wir</h2>
+        <p>Von der ersten Analyse bis zur fertigen Automation — transparent, schnell und mit messbaren Ergebnissen.</p>
+        <a href="#contact" class="btn btn-primary">Jetzt starten <span class="arr"></span></a>
+      </div>
+
+      <div class="timeline">
+        <div class="t-step">
+          <div class="t-left"><div class="t-num">01</div><div class="t-line"></div></div>
+          <div class="t-body">
+            <div class="t-sub">Analyse</div>
+            <h3>Analyse der aktuellen Prozesse</h3>
+            <p>Wir schauen uns Deine bestehenden Abläufe an, identifizieren Schwachstellen und zeigen Dir genau, wo Automation und KI den größten Hebel haben.</p>
+          </div>
+        </div>
+        <div class="t-step">
+          <div class="t-left"><div class="t-num">02</div><div class="t-line"></div></div>
+          <div class="t-body">
+            <div class="t-sub">Planung</div>
+            <h3>Erstellung des Ablaufplans</h3>
+            <p>Du erhältst einen klaren, priorisierten Plan mit konkreten Maßnahmen, realistischen Zeitrahmen und vollständiger Kostentransparenz.</p>
+          </div>
+        </div>
+        <div class="t-step">
+          <div class="t-left"><div class="t-num">03</div><div class="t-line"></div></div>
+          <div class="t-body">
+            <div class="t-sub">Umsetzung</div>
+            <h3>Umsetzung & Integration</h3>
+            <p>Unser Team baut die Automationen und integriert sie nahtlos in Deine bestehenden Systeme — ohne großen Aufwand auf Deiner Seite.</p>
+          </div>
+        </div>
+        <div class="t-step">
+          <div class="t-left"><div class="t-num">04</div></div>
+          <div class="t-body">
+            <div class="t-sub">Liveschaltung</div>
+            <h3>Übergabe & dauerhafter Support</h3>
+            <p>Wir erklären alles verständlich, schulen bei Bedarf und stehen als langfristiger Partner zur Verfügung — auch wenn Dein Unternehmen wächst.</p>
+          </div>
+        </div>
+      </div>
+</section>
+
+<!-- ════ STATS ════ -->
+<section class="section">
+  <div class="wrap">
+    <div class="eyebrow">Zahlen sprechen für sich</div>
+    <h2>Was Automation bewirkt</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-top:3rem;">
+      <div style="background:var(--ink);padding:3rem 2rem;text-align:center;border-left:1px solid var(--border);border-right:1px solid var(--border);">
+  <div style="font-size:3.5rem;font-weight:800;color:#4a7fff;line-height:1;" class="count" data-target="80" data-suffix="%">0</div>
+  <div style="font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-top:0.75rem;">Reduktion repetitiver Aufgaben</div>
+</div>
+      <div style="background:var(--ink);padding:3rem 2rem;text-align:center;border-left:1px solid var(--border);border-right:1px solid var(--border);">
+        <div style="font-size:3.5rem;font-weight:800;color:#4a7fff;line-height:1;" class="count" data-target="98" data-suffix="%">0</div>
+        <div style="font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-top:0.75rem;">weniger manuelle Fehler</div>
+      </div>
+      <div style="background:var(--ink);padding:3rem 2rem;text-align:center;">
+        <div style="font-size:3.5rem;font-weight:800;color:#4a7fff;line-height:1;" class="count" data-target="24" data-suffix="h">0</div>
+        <div style="font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-top:0.75rem;">Stunden am Tag aktiv</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ CONTACT ════ -->
+
+<section id="contact" class="section">
+  <div class="wrap">
+    <div class="contact-box">
+      <div class="eyebrow" style="justify-content:center;">Kontakt</div>
+      <h2>Bereit für den<br><span class="grad">ersten Schritt?</span></h2>
+      <p class="sub" style="margin-top:0.75rem;">Buch Dir jetzt Dein kostenloses Erstgespräch — wir analysieren gemeinsam Dein Potenzial.</p>
+
+      <form action="https://formspree.io/f/xzdynwaa" method="POST"
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Name</label>
+            <input type="text" name="name" class="fc" placeholder="Max Mustermann" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">E-Mail</label>
+            <input type="email" name="email" class="fc" placeholder="max@firma.de" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Unternehmen</label>
+            <input type="text" name="company" class="fc" placeholder="Dein Unternehmen" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Telefon (optional)</label>
+            <input type="tel" name="phone" class="fc" placeholder="+49 ..." />
+          </div>
+          <div class="form-group form-full">
+            <label class="form-label">Anliegen</label>
+            <textarea name="message" class="fc" placeholder="Was möchtest Du automatisieren?"></textarea>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary form-submit">
+  Jetzt Termin buchen <span class="arr"></span>
+</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════ FOOTER ════ -->
+<footer>
+  <div class="footer-row">
+    <div class="footer-mark">R &nbsp; I &nbsp; V &nbsp; I &nbsp; O</div>
+    <div class="footer-links">
+      <a href="impressum.html">Impressum</a>
+<a href="datenschutz.html">Datenschutz</a>
+    </div>
+    <span class="footer-copy">© Rivio 2026</span>
+  </div>
+</footer>
+
+
+<script>
+/* ── Animated network canvas ── */
+(function(){
+  const cv = document.getElementById('netCanvas');
+  const cx = cv.getContext('2d');
+  let W, H, pts = [];
+
+  function resize() { W = cv.width = cv.offsetWidth; H = cv.height = cv.offsetHeight; }
+
+  function Pt() {
+    this.x = Math.random() * W;
+    this.y = Math.random() * H;
+    this.vx = (Math.random() - 0.5) * 0.28;
+    this.vy = (Math.random() - 0.5) * 0.28;
+    this.r  = Math.random() * 1.4 + 0.4;
+  }
+
+  function init() { resize(); pts = Array.from({length:55}, () => new Pt()); }
+
+  function tick() {
+    cx.clearRect(0, 0, W, H);
+    pts.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > W) p.vx *= -1;
+      if (p.y < 0 || p.y > H) p.vy *= -1;
+    });
+    for (let i = 0; i < pts.length; i++) {
+      for (let j = i+1; j < pts.length; j++) {
+        const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
+        const d = Math.sqrt(dx*dx + dy*dy);
+        if (d < 130) {
+          cx.beginPath();
+          cx.moveTo(pts[i].x, pts[i].y);
+          cx.lineTo(pts[j].x, pts[j].y);
+          cx.strokeStyle = `rgba(74,127,255,${(1-d/130)*0.4})`;
+          cx.lineWidth = 0.5;
+          cx.stroke();
+        }
+      }
+    }
+    pts.forEach(p => {
+      cx.beginPath();
+      cx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      cx.fillStyle = 'rgba(74,127,255,0.75)';
+      cx.fill();
+    });
+    requestAnimationFrame(tick);
+  }
+
+  window.addEventListener('resize', resize);
+  init(); tick();
+})();
+
+/* ── Typewriter ── */
+const words = ["Deine Prozesse.", "Dein Business.", "Deine Zukunft."];
+let wi = 0, ci = 0, deleting = false;
+const tw = document.getElementById('typewriter');
+const cur = document.getElementById('cursor');
+function type() {
+  const word = words[wi];
+  tw.textContent = deleting ? word.slice(0, ci--) : word.slice(0, ci++);
+  if (!deleting && ci > word.length) { deleting = true; setTimeout(type, 1800); return; }
+  if (deleting && ci < 0) { ci = 0; deleting = false; wi = (wi + 1) % words.length; }
+  setTimeout(type, deleting ? 45 : 75);
+}
+setTimeout(type, 800);
+
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.pain-card, .service-card, .t-step').forEach((el, i) => {
+  el.style.transitionDelay = (i % 3) * 0.08 + 's';
+  obs.observe(el);
+});
+
+/* ── Form submit ── */
+function submitForm(e) {
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  btn.innerHTML = 'Nachricht gesendet';
+  btn.style.background = '#16a34a';
+  btn.style.boxShadow = '0 0 20px rgba(22,163,74,0.25)';
+  btn.disabled = true;
+  setTimeout(() => {
+    e.target.reset();
+    btn.innerHTML = 'Jetzt Termin buchen <span class="arr"></span>';
+    btn.style.background = '';
+    btn.style.boxShadow = '';
+    btn.disabled = false;
+  }, 3500);
+}
+</script>
+
+<script>
+const counts = document.querySelectorAll('.count');
+const countObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const target = +e.target.dataset.target;
+    const suffix = e.target.dataset.suffix || '+';
+    let current = 0;
+    const step = target / 60;
+    const timer = setInterval(() => {
+      current = Math.min(current + step, target);
+      e.target.textContent = Math.round(current) + suffix;
+      if (current >= target) clearInterval(timer);
+    }, 16);
+    countObs.unobserve(e.target);
+  });
+}, { threshold: 0.5 });
+counts.forEach(c => countObs.observe(c));
+</script>
+
+</body>
+</html>
