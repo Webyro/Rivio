@@ -237,10 +237,12 @@ h3 { margin-bottom: 0.75rem; font-size: 1.35rem; letter-spacing: -0.02em; }
 .offer-stack { display: grid; gap: 1rem; }
 .offer-card { display: grid; grid-template-columns: 90px 1fr minmax(250px, 0.7fr); gap: 2rem; align-items: center; padding: clamp(1.5rem, 3.5vw, 2.5rem); border: 1px solid var(--line); border-radius: var(--radius-md); background: rgba(12, 26, 47, 0.7); }
 .offer-index { display: grid; place-items: center; width: 4.5rem; height: 4.5rem; border: 1px solid var(--line-strong); border-radius: 50%; color: var(--primary-light); }
+.offer-icon svg { width: 2rem; height: 2rem; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 .offer-label { margin-bottom: 0.35rem; color: var(--cyan); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
 .offer-card p:last-child, .offer-card li { color: var(--muted); }
 .offer-card ul { margin: 0; padding-left: 1.25rem; }
 .offer-card li + li { margin-top: 0.45rem; }
+.offer-card li strong { color: #d6def0; }
 
 .process-layout { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: clamp(3rem, 7vw, 7rem); }
 .text-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--primary-light); font-weight: 650; }
@@ -259,11 +261,29 @@ h3 { margin-bottom: 0.75rem; font-size: 1.35rem; letter-spacing: -0.02em; }
 .security-card p { margin-bottom: 0; color: var(--muted); font-size: 0.9rem; }
 
 .news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-.news-card { display: flex; flex-direction: column; min-height: 340px; padding: 1.7rem; transition: transform 180ms ease, border-color 180ms ease; }
+.news-card { display: flex; flex-direction: column; min-height: 390px; padding: 1.7rem; transition: transform 180ms ease, border-color 180ms ease; }
 .news-card:hover { transform: translateY(-4px); border-color: var(--line-strong); }
 .news-meta { display: flex; justify-content: space-between; gap: 1rem; margin-bottom: 2.5rem; color: #8290a7; font-size: 0.75rem; }
 .news-card p { color: var(--muted); }
+.news-card blockquote { margin: 0 0 1rem; padding-left: 1rem; border-left: 2px solid var(--primary); color: #dbe4f7; font-size: 0.95rem; font-style: italic; }
 .news-card .text-link { margin-top: auto; font-size: 0.88rem; }
+
+.productivity-layout { display: grid; grid-template-columns: minmax(280px, 0.72fr) minmax(500px, 1.28fr); align-items: center; gap: clamp(3rem, 6vw, 6rem); }
+.productivity-layout .section-heading { margin-bottom: 0; }
+.productivity-chart { margin: 0; padding: clamp(1.25rem, 3vw, 2rem); border: 1px solid var(--line-strong); border-radius: var(--radius-lg); background: linear-gradient(145deg, rgba(18, 37, 67, 0.88), rgba(8, 20, 38, 0.94)); box-shadow: var(--shadow); }
+.productivity-chart figcaption { display: flex; flex-direction: column; margin-bottom: 1rem; }
+.productivity-chart figcaption strong { font-size: 1.05rem; }
+.productivity-chart figcaption span, .productivity-chart > p { color: var(--muted); font-size: 0.78rem; }
+.productivity-chart svg { width: 100%; height: auto; overflow: visible; }
+.chart-grid line { stroke: rgba(148, 177, 224, 0.12); stroke-width: 1; }
+.chart-axis line { stroke: rgba(202, 216, 250, 0.55); stroke-width: 1.5; }
+.chart-labels text, .chart-values text { fill: #95a5be; font: 12px "Outfit", sans-serif; text-anchor: end; }
+.chart-labels .axis-title { fill: #c3cee1; font-size: 13px; text-anchor: middle; }
+.chart-area { fill: rgba(74, 127, 255, 0.12); }
+.chart-line { fill: none; stroke: var(--cyan); stroke-width: 4; stroke-linecap: round; }
+.chart-points circle { fill: var(--bg); stroke: var(--cyan); stroke-width: 4; }
+.chart-values text { fill: #dce5f7; font-weight: 600; text-anchor: middle; }
+.productivity-chart > p { margin: 0.5rem 0 0; }
 
 .contact-section { overflow: hidden; }
 .contact-section::before { content: ""; position: absolute; right: -15rem; bottom: -15rem; width: 40rem; height: 40rem; border-radius: 50%; background: rgba(74, 127, 255, 0.09); filter: blur(30px); }
@@ -338,7 +358,7 @@ h3 { margin-bottom: 0.75rem; font-size: 1.35rem; letter-spacing: -0.02em; }
   .nav-toggle[aria-expanded="true"] > span:nth-child(3) { opacity: 0; }
   .nav-toggle[aria-expanded="true"] > span:nth-child(4) { transform: translateY(-6px) rotate(-45deg); }
   .hero { min-height: auto; }
-  .hero-grid, .process-layout, .contact-layout { grid-template-columns: 1fr; }
+  .hero-grid, .process-layout, .contact-layout, .productivity-layout { grid-template-columns: 1fr; }
   .hero-panel { max-width: 620px; }
   .team-grid, .news-grid { grid-template-columns: repeat(2, 1fr); }
   .team-card:last-child, .news-card:last-child { grid-column: 1 / -1; max-width: calc(50% - 0.5rem); }
