@@ -14,8 +14,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/main.css?v=20260811-3" />
-  <script src="assets/js/main.js" defer></script>
+  <link rel="stylesheet" href="assets/css/main.css?v=20260814-1" />
+  <script src="assets/js/main.js?v=20260814-1" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">Zum Inhalt springen</a>
@@ -322,18 +322,20 @@
           </div>
         </div>
 
-        <!-- TODO: Backend Kontaktformular anbinden. Keine Zugangsdaten im Frontend hinterlegen. -->
-        <form class="contact-form reveal" data-contact-form>
+        <form class="contact-form reveal" data-contact-form data-contact-endpoint="https://rivio.app.n8n.cloud/webhook/rivio-contact" aria-describedby="contact-privacy contact-status">
           <div class="field-grid">
-            <label>Name<input type="text" name="name" autocomplete="name" required /></label>
-            <label>E-Mail<input type="email" name="email" autocomplete="email" required /></label>
-            <label>Unternehmen<input type="text" name="company" autocomplete="organization" /></label>
-            <label>Telefon <span>(optional)</span><input type="tel" name="phone" autocomplete="tel" /></label>
+            <label>Name<input type="text" name="name" autocomplete="name" minlength="2" maxlength="120" required /></label>
+            <label>E-Mail<input type="email" name="email" autocomplete="email" maxlength="254" required /></label>
+            <label>Unternehmen<input type="text" name="company" autocomplete="organization" maxlength="160" /></label>
+            <label>Telefon <span>(optional)</span><input type="tel" name="phone" autocomplete="tel" maxlength="80" /></label>
           </div>
-          <label>Anliegen<textarea name="message" rows="6" required placeholder="Welchen Prozess möchten Sie verbessern?"></textarea></label>
-          <p class="form-privacy">Mit dem Absenden werden derzeit noch keine Daten übertragen. Das Backend des Kontaktformulars folgt in einem späteren Schritt.</p>
-          <button class="button button-primary" type="submit">Anfrage vorbereiten <span aria-hidden="true">→</span></button>
-          <p class="form-status" role="status" data-form-status></p>
+          <label>Anliegen<textarea name="message" rows="6" minlength="10" maxlength="5000" required placeholder="Welchen Prozess möchten Sie verbessern?"></textarea></label>
+          <div class="form-honeypot" aria-hidden="true">
+            <label>Website<input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+          </div>
+          <p class="form-privacy" id="contact-privacy">Mit dem Absenden werden Ihre Angaben zur Bearbeitung über n8n an uns übermittelt. Weitere Informationen finden Sie in unserer <a href="datenschutz.html">Datenschutzerklärung</a>.</p>
+          <button class="button button-primary" type="submit" data-submit-button><span data-submit-label>Anfrage senden</span> <span aria-hidden="true">→</span></button>
+          <p class="form-status" id="contact-status" role="status" aria-live="polite" data-form-status></p>
         </form>
       </div>
     </section>

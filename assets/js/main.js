@@ -50,11 +50,93 @@
   });
 
   const contactForm = document.querySelector("[data-contact-form]");
-  contactForm?.addEventListener("submit", (event) => {
-    event.preventDefault();
+  if (contactForm) {
+    const endpoint = contactForm.dataset.contactEndpoint;
     const status = contactForm.querySelector("[data-form-status]");
-    if (status) status.textContent = "TODO: Backend des Kontaktformulars anbinden – aktuell wurden keine Daten übertragen.";
-  });
+    const submitButton = contactForm.querySelector("[data-submit-button]");
+    const submitLabel = contactForm.querySelector("[data-submit-label]");
+    let isSubmitting = false;
+
+    const setFormStatus = (message, state = "") => {
+      if (!status) return;
+      status.textContent = message;
+      if (state) status.dataset.state = state;
+      else delete status.dataset.state;
+    };
+
+    contactForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (isSubmitting) return;
+
+      if (!endpoint) {
+        setFormStatus("Das Kontaktformular ist derzeit nicht verfügbar. Bitte schreiben Sie uns an team@rivio-solutions.de.", "error");
+        return;
+      }
+
+      if (!contactForm.reportValidity()) return;
+
+      const formData = new FormData(contactForm);
+      const payload = {
+        name: String(formData.get("name") || ""),
+        email: String(formData.get("email") || ""),
+        company: String(formData.get("company") || ""),
+        phone: String(formData.get("phone") || ""),
+        message: String(formData.get("message") || ""),
+        website: String(formData.get("website") || "")
+      };
+
+      isSubmitting = true;
+      contactForm.setAttribute("aria-busy", "true");
+      if (submitButton) submitButton.disabled = true;
+      if (submitLabel) submitLabel.textContent = "Wird gesendet …";
+      setFormStatus("Ihre Anfrage wird sicher übermittelt …", "loading");
+
+      const controller = new AbortController();
+      const timeoutId = window.setTimeout(() => controller.abort(), 60000);
+
+      try {
+        const response = await fetch(endpoint, {
+          method: "POST",
+          mode: "cors",
+          credentials: "omit",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload),
+          signal: controller.signal
+        });
+
+        let responseBody = {};
+        try {
+          responseBody = await response.json();
+        } catch {
+          responseBody = {};
+        }
+
+        if (!response.ok || responseBody.ok === false) {
+          const message = response.status === 400
+            ? "Bitte prüfen Sie Ihre Angaben und versuchen Sie es erneut."
+            : "Die Anfrage konnte nicht übermittelt werden. Bitte versuchen Sie es später erneut.";
+          throw new Error(message);
+        }
+
+        contactForm.reset();
+        setFormStatus("Vielen Dank! Ihre Anfrage wurde erfolgreich übermittelt.", "success");
+      } catch (error) {
+        const message = error?.name === "AbortError"
+          ? "Die Übermittlung hat zu lange gedauert. Bitte versuchen Sie es erneut."
+          : error?.message || "Die Anfrage konnte nicht übermittelt werden. Bitte versuchen Sie es erneut.";
+        setFormStatus(message, "error");
+      } finally {
+        window.clearTimeout(timeoutId);
+        isSubmitting = false;
+        contactForm.removeAttribute("aria-busy");
+        if (submitButton) submitButton.disabled = false;
+        if (submitLabel) submitLabel.textContent = "Anfrage senden";
+      }
+    });
+  }
 
   const canvas = document.querySelector("[data-network-canvas]");
   if (!canvas || reducedMotion) return;
