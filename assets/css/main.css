@@ -278,8 +278,14 @@ h3 { margin-bottom: 0.75rem; font-size: 1.35rem; letter-spacing: -0.02em; }
 .contact-form input { min-height: 3rem; padding: 0.7rem 0.8rem; }
 .contact-form textarea { resize: vertical; min-height: 9rem; padding: 0.8rem; }
 .contact-form input:focus, .contact-form textarea:focus { border-color: var(--primary-light); }
+.contact-form .button:disabled { cursor: wait; opacity: 0.68; transform: none; }
+.form-honeypot { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
 .form-privacy { color: #8290a7; font-size: 0.75rem; }
+.form-privacy a { color: #aab9d2; text-decoration: underline; text-underline-offset: 0.15em; }
 .form-status { min-height: 1.5rem; margin: 0.8rem 0 0; color: var(--cyan); font-size: 0.86rem; }
+.form-status[data-state="loading"] { color: #a9b8d0; }
+.form-status[data-state="success"] { color: var(--cyan); }
+.form-status[data-state="error"] { color: #ff9b9b; }
 
 .site-footer { padding: 4.5rem 0 1.5rem; border-top: 1px solid var(--line); background: #050c17; }
 .footer-grid { display: grid; grid-template-columns: 1.5fr 0.7fr 0.7fr; gap: 3rem; }
